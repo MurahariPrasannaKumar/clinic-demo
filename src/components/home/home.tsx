@@ -232,7 +232,7 @@ export function Home() {
   }, []);
 
   const handleIntroEnd = useCallback(() => {
-    window.setTimeout(settleHero, 2500);
+    window.setTimeout(settleHero, 2200);
   }, [settleHero]);
 
   useLayoutEffect(() => {
@@ -274,7 +274,7 @@ export function Home() {
         />
 
         <div
-          className="absolute z-20 overflow-hidden rounded-[28px] bg-mist transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          className="absolute z-20 overflow-hidden rounded-[28px] bg-mist transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
           style={heroStyle}
         >
           <div className="mx-auto h-full w-full max-w-2xl md:max-w-3xl">
@@ -285,7 +285,7 @@ export function Home() {
               intro="rise"
               cardWidth={260}
               aspectRatio={1}
-              speed={10}
+              speed={settled ? 10 : 32}
               captions={false}
               gap={30}
               tilt={-5}
@@ -313,7 +313,7 @@ export function Home() {
         <Container>
           <div className="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-8">
             <div
-              className={`flex flex-col justify-center md:col-span-6 md:pr-8 transition-opacity duration-700 ${
+              className={`flex flex-col justify-center md:col-span-6 md:pr-8 transition-opacity duration-500 ${
                 settled ? "opacity-100" : "pointer-events-none opacity-0"
               }`}
             >
@@ -360,7 +360,7 @@ export function Home() {
                   type="button"
                   aria-label="Previous image"
                   onClick={() => carouselRef.current?.prev()}
-                  className={`absolute top-1/2 left-2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/95 text-ink shadow-[0_12px_32px_-16px_rgba(12,15,13,0.3)] backdrop-blur-sm transition-opacity duration-700 hover:bg-ink hover:text-white md:-left-5 ${
+                  className={`absolute top-1/2 left-2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/95 text-ink shadow-[0_12px_32px_-16px_rgba(12,15,13,0.3)] backdrop-blur-sm transition-opacity duration-500 hover:bg-ink hover:text-white md:-left-5 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
@@ -370,7 +370,7 @@ export function Home() {
                   type="button"
                   aria-label="Next image"
                   onClick={() => carouselRef.current?.next()}
-                  className={`absolute top-1/2 right-2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/95 text-ink shadow-[0_12px_32px_-16px_rgba(12,15,13,0.3)] backdrop-blur-sm transition-opacity duration-700 hover:bg-ink hover:text-white md:-right-5 ${
+                  className={`absolute top-1/2 right-2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/95 text-ink shadow-[0_12px_32px_-16px_rgba(12,15,13,0.3)] backdrop-blur-sm transition-opacity duration-500 hover:bg-ink hover:text-white md:-right-5 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
@@ -378,7 +378,7 @@ export function Home() {
                 </button>
 
                 <div
-                  className={`absolute top-4 left-4 z-30 flex items-center gap-3 rounded-2xl border border-line bg-white/95 px-4 py-3 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-700 md:top-6 md:left-6 ${
+                  className={`absolute top-4 left-4 z-30 flex items-center gap-3 rounded-2xl border border-line bg-white/95 px-4 py-3 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-500 md:top-6 md:left-6 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
@@ -403,7 +403,7 @@ export function Home() {
                 </div>
 
                 <div
-                  className={`absolute top-20 right-4 z-30 rounded-2xl border border-line bg-white/95 px-4 py-3 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-700 md:top-24 md:right-6 ${
+                  className={`absolute top-20 right-4 z-30 rounded-2xl border border-line bg-white/95 px-4 py-3 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-500 md:top-24 md:right-6 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
@@ -427,7 +427,7 @@ export function Home() {
                 </div>
 
                 <div
-                  className={`absolute bottom-4 left-4 z-30 flex max-w-xs items-center justify-between gap-6 rounded-2xl border border-line bg-white/95 px-5 py-4 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-700 md:bottom-6 md:left-8 ${
+                  className={`absolute bottom-4 left-4 z-30 flex max-w-xs items-center justify-between gap-6 rounded-2xl border border-line bg-white/95 px-5 py-4 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-500 md:bottom-6 md:left-8 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
