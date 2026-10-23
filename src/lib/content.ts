@@ -22,6 +22,7 @@ export const navLinks = [
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/doctors", label: "Doctors" },
+  { href: "/gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -300,5 +301,124 @@ export const faqs = [
   {
     q: "What happens if I need a specialist referral?",
     a: "Because our specialists work from the same shared chart, most referrals happen inside the practice without a separate intake process, and your primary physician stays looped in on the plan.",
+  },
+];
+
+export type GalleryImage = {
+  id: string;
+  src: string;
+  alt: string;
+  title: string;
+  width: number;
+  height: number;
+};
+
+// Facility and care-space photography used across the site, gathered here
+// for the gallery page. width/height set each card's aspect ratio in the
+// masonry grid — not the source photo's native size.
+export const galleryImages: GalleryImage[] = [
+  {
+    id: "waiting-area",
+    src: "https://images.unsplash.com/photo-1631248055158-edec7a3c072b?w=800&h=1000&q=80&fit=crop",
+    alt: "A bright, plant-filled clinic waiting area",
+    title: "Waiting Area",
+    width: 800,
+    height: 1000,
+  },
+  {
+    id: "exam-suite",
+    src: "https://images.unsplash.com/photo-1551076805-e1869033e561?w=1000&h=750&q=80&fit=crop",
+    alt: "A clean, modern exam room",
+    title: "Exam Suite",
+    width: 1000,
+    height: 750,
+  },
+  {
+    id: "reception",
+    src: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=900&h=1200&q=80&fit=crop",
+    alt: "The clinic's reception desk",
+    title: "Reception",
+    width: 900,
+    height: 1200,
+  },
+  {
+    id: "diagnostics",
+    src: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=900&h=900&q=80&fit=crop",
+    alt: "An X-ray displayed on a radiology monitor",
+    title: "Diagnostics",
+    width: 900,
+    height: 900,
+  },
+  {
+    id: "patient-rooms",
+    src: "https://images.unsplash.com/photo-1512678080530-7760d81faba6?w=1000&h=625&q=80&fit=crop",
+    alt: "A comfortable, private patient room",
+    title: "Patient Rooms",
+    width: 1000,
+    height: 625,
+  },
+  {
+    id: "primary-care",
+    src: "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=750&h=1000&q=80&fit=crop",
+    alt: "A primary care consultation in progress",
+    title: "Primary Care",
+    width: 750,
+    height: 1000,
+  },
+  {
+    id: "pediatrics",
+    src: "https://images.unsplash.com/photo-1758691463331-2ac00e6f676f?w=900&h=675&q=80&fit=crop",
+    alt: "A pediatric visit",
+    title: "Pediatrics",
+    width: 900,
+    height: 675,
+  },
+  {
+    id: "cardiology",
+    src: "https://images.unsplash.com/photo-1530026341218-8e3d0b803ca6?w=800&h=800&q=80&fit=crop",
+    alt: "Cardiology diagnostic equipment",
+    title: "Cardiology",
+    width: 800,
+    height: 800,
+  },
+  {
+    id: "dermatology",
+    src: "https://images.unsplash.com/photo-1552693673-1bf958298935?w=760&h=950&q=80&fit=crop",
+    alt: "A dermatology treatment room",
+    title: "Dermatology",
+    width: 760,
+    height: 950,
+  },
+  {
+    id: "behavioral-health",
+    src: "https://images.unsplash.com/photo-1746021513193-a314945d15c4?w=900&h=600&q=80&fit=crop",
+    alt: "A calm behavioral health counseling room",
+    title: "Behavioral Health",
+    width: 900,
+    height: 600,
+  },
+  {
+    id: "physical-therapy",
+    src: "https://images.unsplash.com/photo-1649751361457-01d3a696c7e6?w=700&h=1050&q=80&fit=crop",
+    alt: "A physical therapy session",
+    title: "Physical Therapy",
+    width: 700,
+    height: 1050,
+  },
+  {
+    id: "care-team",
+    src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&h=675&q=80&fit=crop",
+    alt: "The Alder Clinic care team reviewing a shared patient chart around a table",
+    title: "Care Team",
+    width: 1200,
+    height: 675,
+  },
+  {
+    id: "consultation-room",
+    src: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=750&h=1000&q=80&fit=crop",
+    alt: "A bright, modern consultation room at Alder Clinic with natural light",
+    title: "Consultation Room",
+    width: 750,
+    height: 1000,
   },
 ];

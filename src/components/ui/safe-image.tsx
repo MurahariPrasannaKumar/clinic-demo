@@ -37,3 +37,45 @@ export function SafeImage({
 
   return <Image {...props} alt={alt} fill className={className} onError={() => setErrored(true)} />;
 }
+
+type SafeImageBlockProps = Omit<ImageProps, "fill"> & { fallbackIconSize?: number };
+
+/**
+ * Same fallback behavior as SafeImage, but sized by its own width/height
+ * instead of filling an absolutely-positioned parent — for layouts (like a
+ * masonry grid) where each image's natural aspect ratio drives its height.
+ */
+export function SafeImageBlock({
+  alt,
+  className,
+  fallbackIconSize = 28,
+  width,
+  height,
+  ...props
+}: SafeImageBlockProps) {
+  const [errored, setErrored] = useState(false);
+
+  if (errored) {
+    return (
+      <div
+        className={clsx("flex items-center justify-center bg-mist text-ink-soft/70", className)}
+        style={{ aspectRatio: width && height ? `${width} / ${height}` : undefined }}
+        role="img"
+        aria-label={alt || undefined}
+      >
+        <UserRound size={fallbackIconSize} strokeWidth={1.25} />
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      {...props}
+      width={width}
+      height={height}
+      alt={alt}
+      className={className}
+      onError={() => setErrored(true)}
+    />
+  );
+}
