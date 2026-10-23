@@ -9,10 +9,14 @@ const base =
   "group relative inline-flex items-center justify-center gap-2.5 whitespace-nowrap px-6 py-3.5 text-[0.75rem] font-medium uppercase tracking-[0.16em] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green";
 
 const variants: Record<ButtonVariant, string> = {
-  primary: "bg-ink text-white hover:bg-green",
-  outline: "border border-ink text-ink hover:bg-ink hover:text-white",
-  ghost: "px-0 text-ink hover:text-green",
-  inverse: "bg-white text-ink hover:bg-green-mist",
+  primary: "bg-ink text-ink-contrast hover:bg-green hover:text-white",
+  outline: "border border-ink text-ink hover:bg-ink hover:text-ink-contrast",
+  ghost: "px-0 text-ink hover:text-green-text",
+  // Fixed (not theme-tracking): this variant always sits on the CtaBand's
+  // dark backdrop, independent of the time-of-day theme, so its own
+  // background/text/hover colors must stay constant rather than following
+  // --color-surface/--color-ink/--color-green-mist.
+  inverse: "bg-white text-[#0c0f0d] hover:bg-[#e8f3ee]",
 };
 
 export function Button({

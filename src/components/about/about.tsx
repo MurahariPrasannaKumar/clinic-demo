@@ -59,10 +59,10 @@ export function About() {
                   className="relative grid grid-cols-1 gap-3 pl-8 md:grid-cols-12 md:gap-6 md:pl-10"
                 >
                   <span
-                    className="absolute top-1.5 left-0 h-3.75 w-3.75 rounded-full border-2 border-green bg-white"
+                    className="absolute top-1.5 left-0 h-3.75 w-3.75 rounded-full border-2 border-green bg-surface transition-colors duration-700"
                     aria-hidden
                   />
-                  <span className="font-display text-3xl tracking-tight text-green md:col-span-2 md:text-4xl">
+                  <span className="font-display text-3xl tracking-tight text-green-text md:col-span-2 md:text-4xl">
                     {m.year}
                   </span>
                   <p className="max-w-2xl text-pretty text-[1.0625rem] leading-relaxed text-ink-soft md:col-span-8 md:col-start-4">
@@ -88,10 +88,10 @@ export function About() {
               return (
                 <div
                   key={value.index}
-                  className="group rounded-2xl border border-line bg-white p-8 shadow-[0_1px_2px_rgba(12,15,13,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-green/40 hover:shadow-[0_24px_48px_-28px_rgba(12,15,13,0.25)] md:p-10"
+                  className="group rounded-2xl border border-line bg-surface p-8 shadow-[0_1px_2px_rgba(12,15,13,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-green/40 hover:shadow-[0_24px_48px_-28px_rgba(12,15,13,0.25)] md:p-10"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green-mist text-green">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green-mist text-green-text">
                       <Icon size={20} strokeWidth={1.75} />
                     </span>
                     <span className="font-display text-3xl tracking-tight text-ink/15">
@@ -120,7 +120,7 @@ export function About() {
           style={{ objectPosition: "50% 65%" }}
           className="object-cover"
         />
-        <div className="absolute bottom-6 left-6 rounded-2xl border border-line bg-white/90 px-5 py-3 backdrop-blur-sm md:bottom-10 md:left-10">
+        <div className="absolute bottom-6 left-6 rounded-2xl border border-line bg-surface/90 px-5 py-3 backdrop-blur-sm transition-colors duration-700 md:bottom-10 md:left-10">
           <p className="text-[0.8125rem] font-medium text-ink">Our consultation rooms</p>
           <p className="text-[0.75rem] text-ink-soft">Designed for unhurried conversations</p>
         </div>

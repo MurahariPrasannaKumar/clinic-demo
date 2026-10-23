@@ -22,7 +22,7 @@ export function Faq() {
               <span className="font-display text-xl tracking-tight text-ink md:text-2xl">
                 {item.q}
               </span>
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-mist text-green">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-mist text-green-text">
                 {open ? (
                   <Minus size={16} strokeWidth={1.75} />
                 ) : (

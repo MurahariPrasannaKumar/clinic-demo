@@ -36,7 +36,7 @@ const SOCIAL_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-line bg-white">
+    <footer className="border-t border-line bg-surface transition-colors duration-700">
       <div className="overflow-hidden px-4 py-10 md:py-16">
         <Link href="/" className="block text-center" aria-label={`${site.name} home`}>
           <span className="footer-wordmark inline-block font-display text-[clamp(4rem,18vw,13rem)] leading-none tracking-tight">
@@ -71,7 +71,7 @@ export function Footer() {
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="text-ink-soft transition-colors hover:text-green"
+                  className="text-ink-soft transition-colors hover:text-green-text"
                 >
                   <svg
                     viewBox="0 0 24 24"

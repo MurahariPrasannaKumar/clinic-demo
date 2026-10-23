@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Kicker } from "@/components/ui/kicker";
 import { CtaBand } from "@/components/ui/cta-band";
+import { SafeImage } from "@/components/ui/safe-image";
 import { doctors } from "@/lib/content";
 
 export function Doctors() {
@@ -37,12 +37,12 @@ export function Doctors() {
               >
                 <div className={`md:col-span-4 ${i % 2 === 1 ? "md:order-2" : ""}`}>
                   <div className="relative aspect-[3/4] w-full max-w-sm overflow-hidden bg-mist">
-                    <Image
+                    <SafeImage
                       src={doctor.image}
                       alt={doctor.name}
-                      fill
                       sizes="(min-width: 768px) 28vw, 90vw"
                       className="object-cover"
+                      fallbackIconSize={40}
                     />
                   </div>
                 </div>
@@ -52,7 +52,7 @@ export function Doctors() {
                     i % 2 === 1 ? "md:order-1 md:col-start-2" : "md:col-start-6"
                   }`}
                 >
-                  <span className="font-display text-base text-green">{doctor.index}</span>
+                  <span className="font-display text-base text-green-text">{doctor.index}</span>
                   <h2 className="mt-3 font-display text-3xl tracking-tight text-ink md:text-4xl">
                     {doctor.name}
                   </h2>
@@ -62,7 +62,7 @@ export function Doctors() {
                   <p className="mt-6 max-w-2xl text-pretty text-[1.0625rem] leading-relaxed text-ink-soft">
                     {doctor.bio}
                   </p>
-                  <p className="mt-6 text-[0.75rem] tracking-[0.1em] text-green uppercase">
+                  <p className="mt-6 text-[0.75rem] tracking-[0.1em] text-green-text uppercase">
                     {doctor.focus.join(" · ")}
                   </p>
                 </div>

@@ -51,8 +51,8 @@ export function CtaBand({
     <section className="py-16 md:py-24">
       <div className="mx-auto w-full px-6 md:px-10 xl:px-16">
         <div
-          className={`relative grid grid-cols-1 items-stretch overflow-hidden rounded-[40px] md:grid-cols-12 ${
-            light ? "border border-line bg-white text-ink" : "bg-green-deep text-white"
+          className={`relative grid grid-cols-1 items-stretch overflow-hidden rounded-[40px] transition-colors duration-700 md:grid-cols-12 ${
+            light ? "border border-line bg-surface text-ink" : "bg-green-deep text-white"
           }`}
         >
           <div
@@ -94,7 +94,7 @@ export function CtaBand({
                 kicker ? "mt-5" : ""
               }`}
             >
-              {renderTitle(title, titleEmphasis, light ? "italic text-green" : "italic text-green-mist")}
+              {renderTitle(title, titleEmphasis, light ? "italic text-green-text" : "italic text-green-mist")}
             </h2>
             {description && (
               <p
@@ -116,7 +116,7 @@ export function CtaBand({
                   >
                     <span
                       className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
-                        light ? "bg-green-mist text-green" : "bg-white/10 text-white"
+                        light ? "bg-green-mist text-green-text" : "bg-white/10 text-white"
                       }`}
                     >
                       <feature.icon size={18} strokeWidth={1.75} />

@@ -62,8 +62,8 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="bg-white px-7 py-10">
-        <p className="font-display text-2xl italic text-green">Message sent.</p>
+      <div className="bg-surface px-7 py-10">
+        <p className="font-display text-2xl italic text-green-text">Message sent.</p>
         <p className="mt-3 max-w-sm text-[0.9375rem] leading-relaxed text-ink-soft">
           Someone from our care team will reply within one business day. For anything urgent,
           please call the clinic directly.
@@ -153,7 +153,7 @@ export function ContactForm() {
       </label>
 
       {status === "error" && errorMessage && (
-        <p className="text-[0.875rem] text-green">{errorMessage}</p>
+        <p className="text-[0.875rem] text-green-text">{errorMessage}</p>
       )}
 
       <Button type="submit" className="mt-2 w-fit">

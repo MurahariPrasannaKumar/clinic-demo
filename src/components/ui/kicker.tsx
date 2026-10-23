@@ -12,7 +12,7 @@ export function Kicker({
   className?: string;
 }) {
   const muted = tone === "ink" ? "text-ink-soft" : "text-white/55";
-  const accent = tone === "ink" ? "text-green" : "text-white";
+  const accent = tone === "ink" ? "text-green-text" : "text-white";
 
   return (
     <div

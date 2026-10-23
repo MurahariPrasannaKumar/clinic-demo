@@ -24,10 +24,12 @@ import {
 } from "lucide-react";
 import CircularCarousel, { type CircularCarouselHandle } from "@/components/CircularCarousel";
 import { Container } from "@/components/ui/container";
+import { SafeImage } from "@/components/ui/safe-image";
 import { Button } from "@/components/ui/button";
 import { Kicker } from "@/components/ui/kicker";
 import { CtaBand } from "@/components/ui/cta-band";
 import { Faq } from "@/components/home/faq";
+import { type DayPeriod } from "@/lib/time-period";
 import {
   doctors,
   insurancePlans,
@@ -99,7 +101,7 @@ function renderHeadline(text: string, emphasis: string) {
   return (
     <>
       {text.slice(0, index)}
-      <span className="italic text-green">{emphasis}</span>
+      <span className="italic text-green-text">{emphasis}</span>
       {text.slice(index + emphasis.length)}
     </>
   );
@@ -194,6 +196,15 @@ const HERO_INTRO_STYLE: CSSProperties = {
   height: "min(70vh, 640px)",
 };
 
+// Mirrors --color-mist per period in globals.css. The carousel paints its own
+// edge-fade with a plain color (it can't read CSS variables), so it has to
+// be kept in sync with the theme by hand.
+const FADE_COLORS: Record<DayPeriod, string> = {
+  morning: "#f4f6f5",
+  afternoon: "#f1e6cf",
+  evening: "#181c15",
+};
+
 export function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef<CircularCarouselHandle>(null);
@@ -202,6 +213,19 @@ export function Home() {
   const activeItem = HERO_IMAGES[activeIndex] ?? HERO_IMAGES[0];
   const [todayHours, setTodayHours] = useState(site.hours[0]);
   const isOpenToday = !todayHours.time.toLowerCase().includes("closed");
+  const [fadeColor, setFadeColor] = useState(FADE_COLORS.morning);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const sync = () => {
+      const period = html.getAttribute("data-period") as DayPeriod | null;
+      setFadeColor(FADE_COLORS[period ?? "morning"]);
+    };
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(html, { attributes: true, attributeFilter: ["data-period"] });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     // Reads the client's current date, which must stay out of render so it
@@ -300,7 +324,7 @@ export function Home() {
               draggable
               parallax={0.25}
               stretch={0.4}
-              fadeColor="#f4f6f5"
+              fadeColor={fadeColor}
               depthFade={0.5}
               innerShade={0.55}
               cornerRadius={28}
@@ -340,7 +364,7 @@ export function Home() {
               <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-5">
                 {HERO_STATS.map((stat) => (
                   <div key={stat.label} className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-white text-green">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-green-text transition-colors duration-700">
                       <stat.icon size={18} strokeWidth={1.75} />
                     </span>
                     <div>
@@ -360,7 +384,7 @@ export function Home() {
                   type="button"
                   aria-label="Previous image"
                   onClick={() => carouselRef.current?.prev()}
-                  className={`absolute top-1/2 left-2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/95 text-ink shadow-[0_12px_32px_-16px_rgba(12,15,13,0.3)] backdrop-blur-sm transition-opacity duration-500 hover:bg-ink hover:text-white md:-left-5 ${
+                  className={`absolute top-1/2 left-2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-surface/95 text-ink shadow-[0_12px_32px_-16px_rgba(12,15,13,0.3)] backdrop-blur-sm transition-opacity duration-500 hover:bg-ink hover:text-ink-contrast md:-left-5 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
@@ -370,7 +394,7 @@ export function Home() {
                   type="button"
                   aria-label="Next image"
                   onClick={() => carouselRef.current?.next()}
-                  className={`absolute top-1/2 right-2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/95 text-ink shadow-[0_12px_32px_-16px_rgba(12,15,13,0.3)] backdrop-blur-sm transition-opacity duration-500 hover:bg-ink hover:text-white md:-right-5 ${
+                  className={`absolute top-1/2 right-2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-surface/95 text-ink shadow-[0_12px_32px_-16px_rgba(12,15,13,0.3)] backdrop-blur-sm transition-opacity duration-500 hover:bg-ink hover:text-ink-contrast md:-right-5 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
@@ -378,7 +402,7 @@ export function Home() {
                 </button>
 
                 <div
-                  className={`absolute top-4 left-4 z-30 flex items-center gap-3 rounded-2xl border border-line bg-white/95 px-4 py-3 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-500 md:top-6 md:left-6 ${
+                  className={`absolute top-4 left-4 z-30 flex items-center gap-3 rounded-2xl border border-line bg-surface/95 px-4 py-3 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-500 md:top-6 md:left-6 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
@@ -403,7 +427,7 @@ export function Home() {
                 </div>
 
                 <div
-                  className={`absolute top-20 right-4 z-30 rounded-2xl border border-line bg-white/95 px-4 py-3 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-500 md:top-24 md:right-6 ${
+                  className={`absolute top-20 right-4 z-30 rounded-2xl border border-line bg-surface/95 px-4 py-3 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-500 md:top-24 md:right-6 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
@@ -412,9 +436,15 @@ export function Home() {
                       {doctors.slice(0, 3).map((doctor) => (
                         <span
                           key={doctor.id}
-                          className="relative h-7 w-7 overflow-hidden rounded-full border-2 border-white"
+                          className="relative h-7 w-7 overflow-hidden rounded-full border-2 border-surface"
                         >
-                          <Image src={doctor.image} alt="" fill sizes="28px" className="object-cover" />
+                          <SafeImage
+                            src={doctor.image}
+                            alt=""
+                            sizes="28px"
+                            className="object-cover"
+                            fallbackIconSize={14}
+                          />
                         </span>
                       ))}
                     </div>
@@ -427,7 +457,7 @@ export function Home() {
                 </div>
 
                 <div
-                  className={`absolute bottom-4 left-4 z-30 flex max-w-xs items-center justify-between gap-6 rounded-2xl border border-line bg-white/95 px-5 py-4 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-500 md:bottom-6 md:left-8 ${
+                  className={`absolute bottom-4 left-4 z-30 flex max-w-xs items-center justify-between gap-6 rounded-2xl border border-line bg-surface/95 px-5 py-4 shadow-[0_12px_32px_-16px_rgba(12,15,13,0.25)] backdrop-blur-sm transition-opacity duration-500 md:bottom-6 md:left-8 ${
                     settled ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                 >
@@ -467,7 +497,7 @@ export function Home() {
               <div key={stat.label} className="border-l border-line pl-5 md:pl-6">
                 <p className="font-display text-4xl tracking-tight text-ink xs:text-5xl md:text-[3.5rem]">
                   {stat.value}
-                  <span className="text-2xl text-green md:text-3xl">{stat.suffix}</span>
+                  <span className="text-2xl text-green-text md:text-3xl">{stat.suffix}</span>
                 </p>
                 <p className="mt-3 max-w-44 text-[0.8125rem] leading-snug text-ink-soft">
                   {stat.label}
@@ -545,7 +575,7 @@ export function Home() {
               <h2 className="mt-5 text-balance font-display text-4xl leading-[1.1] tracking-tight text-ink md:text-[2.75rem]">
                 Care organized
                 <br />
-                <span className="italic text-green">around you.</span>
+                <span className="italic text-green-text">around you.</span>
               </h2>
               <p className="mt-6 max-w-md text-pretty text-[1.0625rem] leading-relaxed text-ink-soft">
                 From everyday care to specialized treatment, our services are designed to keep
@@ -570,11 +600,11 @@ export function Home() {
                   aria-hidden
                 />
 
-                <div className="absolute top-6 -right-2 w-60 rounded-2xl border border-line bg-white/95 p-5 shadow-[0_20px_50px_-24px_rgba(12,15,13,0.3)] backdrop-blur-sm sm:w-64 md:top-10 md:-right-10">
+                <div className="absolute top-6 -right-2 w-60 rounded-2xl border border-line bg-surface/95 p-5 shadow-[0_20px_50px_-24px_rgba(12,15,13,0.3)] backdrop-blur-sm sm:w-64 md:top-10 md:-right-10">
                   <div className="flex flex-col gap-4">
                     {SERVICE_HIGHLIGHTS.map((item) => (
                       <div key={item.label} className="flex items-start gap-3">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-mist text-green">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-mist text-green-text">
                           <item.icon size={16} strokeWidth={1.75} />
                         </span>
                         <div>
@@ -594,7 +624,7 @@ export function Home() {
               <Link
                 key={service.id}
                 href={`/services#${service.id}`}
-                className="group flex items-start gap-5 rounded-2xl border border-line bg-white p-6 shadow-[0_1px_2px_rgba(12,15,13,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-green/40 hover:shadow-[0_24px_48px_-28px_rgba(12,15,13,0.25)]"
+                className="group flex items-start gap-5 rounded-2xl border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(12,15,13,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-green/40 hover:shadow-[0_24px_48px_-28px_rgba(12,15,13,0.25)]"
               >
                 <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-xl bg-mist">
                   <Image src={service.image} alt="" fill sizes="112px" className="object-cover" />
@@ -602,14 +632,14 @@ export function Home() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-mist font-display text-sm text-green">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-mist font-display text-sm text-green-text">
                         {service.index}
                       </span>
-                      <h3 className="font-display text-xl tracking-tight text-ink transition-colors group-hover:text-green md:text-2xl">
+                      <h3 className="font-display text-xl tracking-tight text-ink transition-colors group-hover:text-green-text md:text-2xl">
                         {service.name}
                       </h3>
                     </div>
-                    <span className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-mist text-green transition-colors group-hover:bg-green group-hover:text-white sm:flex">
+                    <span className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-mist text-green-text transition-colors group-hover:bg-green group-hover:text-white sm:flex">
                       <ArrowRight size={16} strokeWidth={1.75} />
                     </span>
                   </div>
@@ -661,11 +691,11 @@ export function Home() {
               <div
                 key={step.index}
                 style={stepsVisible ? { animationDelay: `${i * 100}ms` } : undefined}
-                className={`group border border-line bg-white p-7 shadow-[0_1px_2px_rgba(12,15,13,0.04),0_18px_40px_-28px_rgba(12,15,13,0.18)] transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-1.5 hover:scale-[1.02] hover:border-green/50 hover:shadow-[0_24px_48px_-28px_rgba(12,15,13,0.28)] ${
+                className={`group border border-line bg-surface p-7 shadow-[0_1px_2px_rgba(12,15,13,0.04),0_18px_40px_-28px_rgba(12,15,13,0.18)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-1.5 hover:scale-[1.02] hover:border-green/50 hover:shadow-[0_24px_48px_-28px_rgba(12,15,13,0.28)] ${
                   stepsVisible ? "card-bounce-in" : "opacity-0"
                 }`}
               >
-                <span className="flex h-10 w-10 items-center justify-center border border-green/25 bg-green-mist font-display text-base text-green">
+                <span className="flex h-10 w-10 items-center justify-center border border-green/25 bg-green-mist font-display text-base text-green-text">
                   {step.index}
                 </span>
                 <h3 className="mt-5 font-display text-xl tracking-tight text-ink md:text-2xl">
@@ -688,7 +718,7 @@ export function Home() {
               <h2 className="mt-5 text-balance font-display text-4xl leading-[1.1] tracking-tight text-ink md:text-[2.75rem]">
                 Five physicians.
                 <br />
-                <span className="italic text-green">One shared chart.</span>
+                <span className="italic text-green-text">One shared chart.</span>
               </h2>
               <p className="mt-6 max-w-sm text-pretty text-[1.0625rem] leading-relaxed text-ink-soft">
                 Your primary physician, your care team, and your specialists all from the same
@@ -714,7 +744,7 @@ export function Home() {
                   >
                     <p className="font-display text-3xl tracking-tight text-ink">
                       {stat.value}
-                      {stat.suffix && <span className="text-green">{stat.suffix}</span>}
+                      {stat.suffix && <span className="text-green-text">{stat.suffix}</span>}
                     </p>
                     <p className="mt-1 text-[0.8125rem] text-ink-soft">{stat.label}</p>
                   </div>
@@ -727,14 +757,14 @@ export function Home() {
                 {doctors.slice(0, 3).map((doctor) => (
                   <Link key={doctor.id} href="/doctors" className="flip-card h-[27rem]">
                     <div className="flip-card-inner rounded-2xl shadow-[0_1px_2px_rgba(12,15,13,0.04),0_18px_40px_-28px_rgba(12,15,13,0.18)]">
-                      <div className="flip-card-front flex flex-col justify-between overflow-hidden rounded-2xl border border-line bg-white p-6">
+                      <div className="flip-card-front flex flex-col justify-between overflow-hidden rounded-2xl border border-line bg-surface p-6 transition-colors duration-700">
                         <div className="relative h-28 overflow-hidden rounded-xl bg-mist md:h-32">
-                          <Image
+                          <SafeImage
                             src={doctor.image}
                             alt=""
-                            fill
                             sizes="(min-width: 768px) 22vw, 90vw"
                             className="object-cover"
+                            fallbackIconSize={22}
                           />
                         </div>
                         <div className="mt-6">
@@ -747,15 +777,15 @@ export function Home() {
                           <div className="mt-5 flex items-end justify-between border-t border-line pt-5">
                             <div className="space-y-2">
                               <div className="flex items-center gap-2 text-[0.8125rem] text-ink-soft">
-                                <GraduationCap size={15} strokeWidth={1.75} className="shrink-0 text-green" />
+                                <GraduationCap size={15} strokeWidth={1.75} className="shrink-0 text-green-text" />
                                 {doctor.credentials}
                               </div>
                               <div className="flex items-center gap-2 text-[0.8125rem] text-ink-soft">
-                                <Building2 size={15} strokeWidth={1.75} className="shrink-0 text-green" />
+                                <Building2 size={15} strokeWidth={1.75} className="shrink-0 text-green-text" />
                                 {DOCTOR_EXPERIENCE[doctor.id]}+ Years Experience
                               </div>
                             </div>
-                            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green-mist text-green">
+                            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green-mist text-green-text">
                               <ArrowRight size={16} strokeWidth={1.75} />
                             </span>
                           </div>
@@ -763,12 +793,12 @@ export function Home() {
                       </div>
 
                       <div className="flip-card-back overflow-hidden rounded-2xl">
-                        <Image
+                        <SafeImage
                           src={doctor.image}
                           alt={doctor.name}
-                          fill
                           sizes="(min-width: 768px) 22vw, 90vw"
                           className="object-cover"
+                          fallbackIconSize={32}
                         />
                         <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/70 to-transparent p-5">
                           <p className="font-display text-lg text-white">{doctor.name}</p>
@@ -794,7 +824,7 @@ export function Home() {
               <h2 className="mt-5 max-w-xl text-balance font-display text-4xl leading-[1.1] tracking-tight text-ink md:text-[2.75rem]">
                 What it sounds like
                 <br />
-                <span className="italic text-green">from the exam chair.</span>
+                <span className="italic text-green-text">from the exam chair.</span>
               </h2>
               <p className="mt-6 max-w-md text-pretty text-[1.0625rem] leading-relaxed text-ink-soft">
                 Real stories from real patients &mdash; because the best measure of care is the
@@ -807,13 +837,13 @@ export function Home() {
                 <span className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink-soft">
                   <ArrowLeft size={16} strokeWidth={1.75} />
                 </span>
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-green-mist text-green">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-green-mist text-green-text">
                   <ArrowRight size={16} strokeWidth={1.75} />
                 </span>
               </div>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-1.5 border-b border-ink pb-0.5 text-[0.75rem] font-medium tracking-[0.12em] text-ink uppercase transition-colors hover:border-green hover:text-green"
+                className="inline-flex items-center gap-1.5 border-b border-ink pb-0.5 text-[0.75rem] font-medium tracking-[0.12em] text-ink uppercase transition-colors hover:border-green hover:text-green-text"
               >
                 View more stories
                 <ArrowUpRight size={13} strokeWidth={1.75} />
@@ -827,11 +857,11 @@ export function Home() {
               return (
                 <div
                   key={t.name}
-                  className="flex h-full min-h-88 overflow-hidden rounded-2xl border border-line bg-white shadow-[0_1px_2px_rgba(12,15,13,0.04),0_18px_40px_-28px_rgba(12,15,13,0.18)]"
+                  className="flex h-full min-h-88 overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_1px_2px_rgba(12,15,13,0.04),0_18px_40px_-28px_rgba(12,15,13,0.18)] transition-colors duration-700"
                 >
                   <div className="flex min-w-0 flex-1 flex-col p-6 md:p-7">
                     <span className="flex h-10 w-10 items-center justify-center rounded-full bg-green-mist">
-                      <span className="font-display text-xl leading-none text-green">&ldquo;</span>
+                      <span className="font-display text-xl leading-none text-green-text">&ldquo;</span>
                     </span>
                     <p className="mt-4 flex-1 text-pretty font-display text-lg italic leading-snug text-ink">
                       {visual ? renderHeadline(t.quote, visual.highlight) : t.quote}
@@ -871,7 +901,7 @@ export function Home() {
 
       <section className="relative overflow-hidden border-y border-line bg-mist py-24 md:py-32">
         <div
-          className="pointer-events-none absolute -top-10 -left-32 h-80 w-80 rounded-full bg-white/70 blur-2xl"
+          className="pointer-events-none absolute -top-10 -left-32 h-80 w-80 rounded-full bg-surface/70 blur-2xl"
           aria-hidden
         />
         <div
@@ -884,7 +914,7 @@ export function Home() {
             <div className="md:col-span-5">
               <Kicker index="06" label="Insurance & pricing" />
               <h2 className="mt-5 text-balance font-display text-4xl leading-[1.1] tracking-tight text-ink md:text-[2.75rem]">
-                Covered, or <span className="italic text-green">clearly</span> priced if not.
+                Covered, or <span className="italic text-green-text">clearly</span> priced if not.
               </h2>
               <p className="mt-6 max-w-sm text-pretty text-[1.0625rem] leading-relaxed text-ink-soft">
                 We&rsquo;re in-network with the major plans below. Self-pay patients are quoted a flat
@@ -896,9 +926,9 @@ export function Home() {
                 {insurancePlans.map((plan) => (
                   <div
                     key={plan}
-                    className="flex items-center gap-3 rounded-2xl border border-line bg-white px-4 py-4"
+                    className="flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-4 transition-colors duration-700"
                   >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-mist font-display text-base text-green">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-mist font-display text-base text-green-text">
                       {plan.charAt(0)}
                     </span>
                     <span className="text-[0.875rem] font-medium text-ink">{plan}</span>
@@ -927,7 +957,7 @@ export function Home() {
             <div className="md:col-span-5">
               <Kicker index="07" label="Questions" />
               <h2 className="mt-5 text-balance font-display text-4xl leading-[1.1] tracking-tight text-ink md:text-[2.75rem]">
-                Before you <span className="italic text-green">book.</span>
+                Before you <span className="italic text-green-text">book.</span>
               </h2>
               <p className="mt-6 max-w-sm text-pretty text-[1.0625rem] leading-relaxed text-ink-soft">
                 Answers to common questions about appointments, insurance, and what to expect at
@@ -942,7 +972,7 @@ export function Home() {
                   sizes="(min-width: 768px) 32vw, 90vw"
                   className="object-cover"
                 />
-                <span className="absolute top-4 right-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-mist/90 text-green backdrop-blur-sm">
+                <span className="absolute top-4 right-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-mist/90 text-green-text backdrop-blur-sm">
                   <Leaf size={22} strokeWidth={1.5} />
                 </span>
               </div>
@@ -958,7 +988,7 @@ export function Home() {
             </div>
 
             <div className="md:col-span-7">
-              <div className="rounded-[28px] border border-line bg-white px-6 md:px-10">
+              <div className="rounded-[28px] border border-line bg-surface px-6 md:px-10 transition-colors duration-700">
                 <Faq />
               </div>
             </div>
@@ -994,7 +1024,7 @@ export function Home() {
           href={`tel:${site.phoneHref}`}
           className="flex items-center gap-3 text-ink-soft transition-colors hover:text-ink"
         >
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-mist text-green">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-mist text-green-text">
             <Phone size={16} strokeWidth={1.75} />
           </span>
           <span className="text-left">

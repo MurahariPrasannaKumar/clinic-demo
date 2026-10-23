@@ -5,6 +5,19 @@
   --font-sans: var(--font-inter);
 
   --color-white: #ffffff;
+
+  --breakpoint-xs: 22.5rem;
+}
+
+/*
+ * These tokens are deliberately NOT inlined: Tailwind then emits utilities as
+ * `background-color: var(--color-surface)` etc. instead of baking in the literal
+ * hex value, which is what lets the `:root[data-period="…"]` blocks below
+ * repaint every `bg-surface`/`text-ink`/`bg-mist`/… usage across the site when
+ * the time-of-day theme changes.
+ */
+@theme {
+  --color-surface: #ffffff;
   --color-mist: #f4f6f5;
   --color-line: #e4e8e5;
   --color-ink: #0c0f0d;
@@ -12,8 +25,11 @@
   --color-green: #0e6b4c;
   --color-green-deep: #0a3d2c;
   --color-green-mist: #e8f3ee;
-
-  --breakpoint-xs: 22.5rem;
+  --color-green-text: #0e6b4c;
+  /* The correct foreground to put on a solid `bg-ink` fill (e.g. the primary
+     button). Plain `text-white` breaks once --color-ink turns light in the
+     evening theme, so this tracks whichever color actually contrasts. */
+  --color-ink-contrast: #ffffff;
 }
 
 :root {
@@ -27,6 +43,47 @@
   }
 }
 
+/*
+ * Time-of-day theme. `data-period` is set on <html> from the visitor's local
+ * clock (see TimeTheme component) and kept live, so the whole site — not just
+ * the navbar clock — repaints as the day moves from morning into afternoon
+ * into evening. Every pair below was checked for WCAG AA text contrast
+ * (ink/ink-soft against surface and mist, green-text against mist/green-mist).
+ */
+:root[data-period="afternoon"] {
+  color-scheme: light;
+  --color-surface: #fbf6ec;
+  --color-mist: #f1e6cf;
+  --color-line: #e3d3ab;
+  --color-ink: #2a2014;
+  --color-ink-soft: #6c5f49;
+  --color-green-mist: #ece0c4;
+  --color-green-text: #0e6b4c;
+  --color-ink-contrast: #ffffff;
+}
+
+:root[data-period="evening"] {
+  color-scheme: dark;
+  --color-surface: #11140f;
+  --color-mist: #181c15;
+  --color-line: #343b32;
+  --color-ink: #f3f5ef;
+  --color-ink-soft: #a9b0a3;
+  --color-green-mist: #1f2a22;
+  --color-green-text: #4ade80;
+  --color-ink-contrast: #11140f;
+}
+
+html[data-period] {
+  transition: background-color 0.7s ease;
+}
+
+html[data-period] body {
+  transition:
+    background-color 0.7s ease,
+    color 0.7s ease;
+}
+
 * {
   border-color: var(--color-line);
 }
@@ -36,7 +93,7 @@ html {
 }
 
 body {
-  background: var(--color-white);
+  background: var(--color-surface);
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 1.0625rem;
@@ -159,9 +216,9 @@ body {
 .footer-wordmark {
   background: linear-gradient(
     110deg,
-    rgba(12, 15, 13, 0.08) 20%,
-    rgba(12, 15, 13, 0.45) 50%,
-    rgba(12, 15, 13, 0.08) 80%
+    color-mix(in srgb, var(--color-ink) 8%, transparent) 20%,
+    color-mix(in srgb, var(--color-ink) 45%, transparent) 50%,
+    color-mix(in srgb, var(--color-ink) 8%, transparent) 80%
   );
   background-size: 250% 100%;
   -webkit-background-clip: text;
