@@ -723,7 +723,7 @@ export function Home() {
             </div>
 
             <div className="md:col-span-7">
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 md:gap-6">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
                 {doctors.slice(0, 3).map((doctor) => (
                   <Link key={doctor.id} href="/doctors" className="flip-card h-[27rem]">
                     <div className="flip-card-inner rounded-2xl shadow-[0_1px_2px_rgba(12,15,13,0.04),0_18px_40px_-28px_rgba(12,15,13,0.18)]">
@@ -892,7 +892,7 @@ export function Home() {
               </p>
             </div>
             <div className="md:col-span-6 md:col-start-7">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
                 {insurancePlans.map((plan) => (
                   <div
                     key={plan}
